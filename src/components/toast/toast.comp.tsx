@@ -7,7 +7,6 @@ const Toast = () => {
   const { device } = useDevice();
   return (
     <Toaster
-      closeButton
       richColors
       duration={5000}
       visibleToasts={3}
