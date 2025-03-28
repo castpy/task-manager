@@ -7,8 +7,10 @@ import { useUserContext } from "@/context/user.context";
 import { getMe } from "@/services/get.me.service";
 import { AxiosErrorWithResponse } from "@/@types/api.axios.error";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export const useAppTemplate = () => {
+  const router = useRouter();
   const { setUser } = useUserContext();
   const [loading, setLoading] = useState<boolean>(false);
   const [disableSubmit, setDisableSubmit] = useState<boolean>(true);
@@ -28,6 +30,10 @@ export const useAppTemplate = () => {
         setCookie(response.token, 1);
         const myData = await getMe(response.token);
         setUser(myData);
+        toast.success(`Seja bem-vindo!`);
+        setTimeout(() => {
+          router.push("/board");
+        }, 3000);
       }
     } catch (error) {
       const e = error as AxiosErrorWithResponse;

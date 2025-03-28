@@ -32,7 +32,10 @@ export const useSocialAuth = () => {
             setCookie(session.accessToken, 1);
             const myData = await getMe(session.accessToken);
             setUser(myData);
-            router.push("/");
+            toast.success(`Seja bem-vindo!`);
+            setTimeout(() => {
+              router.push("/board");
+            }, 3000);
           } else {
             toast.error("Token inválido.");
             signOut();
