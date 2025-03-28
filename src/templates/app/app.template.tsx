@@ -2,6 +2,7 @@
 
 import React from "react";
 import styles from "./app.module.css";
+import { useAppTemplate } from "./use.app.template";
 import { At, Password } from "@phosphor-icons/react";
 import {
   Box,
@@ -15,6 +16,8 @@ import { AboutPage } from "@/components/about_page/about_page.comp";
 import { SocialAuth } from "@/components/social_auth/social_auth.comp";
 
 const AppTemplate = () => {
+  const { form, setForm } = useAppTemplate();
+
   return (
     <Box className={styles.main}>
       <AboutPage
@@ -32,8 +35,15 @@ const AppTemplate = () => {
             <TextField.Root
               size="3"
               type="email"
+              value={form.email}
               placeholder="E-mail"
               className={styles.input}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  email: e.target.value,
+                })
+              }
             >
               <TextField.Slot>
                 <At size={32} />
@@ -48,7 +58,14 @@ const AppTemplate = () => {
               size="3"
               type="password"
               placeholder="Senha"
+              value={form.password}
               className={styles.input}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  password: e.target.value,
+                })
+              }
             >
               <TextField.Slot>
                 <Password size={32} />
