@@ -1,8 +1,8 @@
-export const setCookie = (name: string, value: string, days: number = 1) => {
+export const setCookie = (value: string, days: number = 1) => {
   const date = new Date();
   date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
   const expires = `expires=${date.toUTCString()}`;
-  document.cookie = `${name}=${value};${expires};path=/`;
+  document.cookie = `${process.env.NEXT_PUBLIC_COOKIE_NAME}=${value};${expires};path=/`;
 };
 
 export const getCookie = (name: string): string | undefined => {

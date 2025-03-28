@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getMe } from "@/services/get.me.service";
 import { useUserContext } from "@/context/user.context";
-import { verifyToken } from "@/services/post.auth.service";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { verifyToken } from "@/services/post.auth.service";
 
 export const useSocialAuth = () => {
   const router = useRouter();
@@ -29,11 +29,7 @@ export const useSocialAuth = () => {
           setLoadingHooks(true);
           const response = await verifyToken(session.accessToken);
           if (response.valid) {
-            setCookie(
-              process.env.NEXT_PUBLIC_COOKIE_NAME!,
-              session.accessToken,
-              1
-            );
+            setCookie(session.accessToken, 1);
             const myData = await getMe(session.accessToken);
             setUser(myData);
             router.push("/");

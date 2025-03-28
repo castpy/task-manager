@@ -12,7 +12,8 @@ export const SocialAuth = ({ social, loading }: SocialAuthProps) => {
   if (social === "google") {
     return (
       <Button
-        loading={loading || loadingHook}
+        disabled={loading || loadingHook}
+        loading={loadingHook}
         onClick={handleSignIn}
         className={styles.main}
         variant="outline"

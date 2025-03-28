@@ -16,7 +16,8 @@ import { AboutPage } from "@/components/about_page/about_page.comp";
 import { SocialAuth } from "@/components/social_auth/social_auth.comp";
 
 const AppTemplate = () => {
-  const { form, setForm } = useAppTemplate();
+  const { form, setForm, loading, disableSubmit, handleAuthUser } =
+    useAppTemplate();
 
   return (
     <Box className={styles.main}>
@@ -27,7 +28,7 @@ const AppTemplate = () => {
       />
 
       <Card className={styles.card}>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleAuthUser}>
           <Box className={styles.inputContainer}>
             <Text className={styles.label} size="3">
               E-mail
@@ -73,14 +74,20 @@ const AppTemplate = () => {
             </TextField.Root>
           </Box>
 
-          <Button type="submit" size="3" className={styles.button}>
+          <Button
+            size="3"
+            type="submit"
+            loading={loading}
+            disabled={disableSubmit}
+            className={styles.button}
+          >
             Entrar
           </Button>
         </form>
 
         <Separator size="4" />
 
-        <SocialAuth social="google" />
+        <SocialAuth social="google" loading={loading} />
       </Card>
     </Box>
   );
