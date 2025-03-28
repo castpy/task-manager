@@ -16,16 +16,16 @@ export const SocialAuth = ({ social, loading }: SocialAuthProps) => {
         onClick={handleSignIn}
         className={styles.main}
         variant="outline"
-        size="3"
+        size="4"
       >
         <Image
           src="/static/icon/google_icon.png"
           className={styles.icon}
           alt="Google Icon"
-          height={24}
-          width={24}
+          height={45}
+          width={45}
         />
-        <Text className={styles.title} size="2">
+        <Text className={styles.title} size="3">
           Entrar com Google
         </Text>
       </Button>
