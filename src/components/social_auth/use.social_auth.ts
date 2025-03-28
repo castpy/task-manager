@@ -1,11 +1,11 @@
-import { signIn, signOut, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { verifyToken } from "@/services/post.auth.service";
 import { setCookie } from "@/utils/cookie";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { getMe } from "@/services/get.me.service";
 import { useUserContext } from "@/context/user.context";
-import { useRouter } from "next/navigation";
+import { verifyToken } from "@/services/post.auth.service";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 export const useSocialAuth = () => {
   const router = useRouter();
@@ -17,9 +17,8 @@ export const useSocialAuth = () => {
     try {
       setLoadingHooks(true);
       await signIn("google");
-    } catch (error) {
+    } catch {
       toast.error("Erro ao fazer login com Google.");
-      console.error("Erro ao fazer login com Google:", error);
     }
   };
 
@@ -42,9 +41,8 @@ export const useSocialAuth = () => {
             toast.error("Token inválido.");
             signOut();
           }
-        } catch (error) {
+        } catch {
           toast.error("Erro ao verificar token.");
-          console.error("Erro ao verificar token:", error);
         } finally {
           setLoadingHooks(false);
         }
