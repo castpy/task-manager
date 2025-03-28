@@ -1,0 +1,8 @@
+.menuItemLine {
+  gap: 0.5rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: flex-start;
+}
