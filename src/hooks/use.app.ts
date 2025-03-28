@@ -9,7 +9,7 @@ export const useApp = () => {
   const token = getCookie(`${process.env.NEXT_PUBLIC_COOKIE_NAME}`);
 
   const logOut = () => {
-    setCookie(`${process.env.NEXT_PUBLIC_COOKIE_NAME}`, "", -1);
+    setCookie("", -1);
     router.push(`/`);
     setUser(null);
     signOut();

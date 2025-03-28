@@ -1,0 +1,12 @@
+.main {
+  width: 100%;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  flex-direction: row;
+}
+
+.title {
+  font-weight: 500;
+  text-transform: uppercase;
+}

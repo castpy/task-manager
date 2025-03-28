@@ -1,3 +1,5 @@
+import AppTemplate from "@/templates/app/app.template";
+
 export default function Home() {
-  return <h1>HOME</h1>;
+  return <AppTemplate />;
 }
