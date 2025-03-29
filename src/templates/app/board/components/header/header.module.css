@@ -1,0 +1,12 @@
+.main {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.button {
+  cursor: pointer;
+  text-transform: uppercase;
+}
