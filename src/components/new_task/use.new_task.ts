@@ -5,9 +5,11 @@ import { AxiosErrorWithResponse } from "@/@types/api.axios.error";
 import { postNewTask } from "@/services/post.newTask.service";
 import { getCookie } from "@/utils/cookie";
 import { NewTaskProps } from "./types/new_task";
+import { useTaskContext } from "@/context/task.context";
 
 export const useNewTask = ({ onClose, defaultStatus }: NewTaskProps) => {
   const token = getCookie();
+  const { setLoadingTaskContext } = useTaskContext();
   const [loading, setLoading] = useState<boolean>(false);
   const [form, setForm] = useState<NewTaskForm>({
     title: "",
@@ -37,6 +39,7 @@ export const useNewTask = ({ onClose, defaultStatus }: NewTaskProps) => {
         if (response === 201) {
           toast.success("Task criada!");
           onClose();
+          setLoadingTaskContext(true);
         }
       }
     } catch (error) {
