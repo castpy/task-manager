@@ -13,8 +13,8 @@ export const useTaskView = ({ taskId, close }: TaskViewProps) => {
   const router = useRouter();
   const { tasks } = useTaskContext();
   const [loading, setLoading] = useState(false);
-  const { setLoadingTaskContext } = useTaskContext();
   const [task, setTask] = useState<Task | null>(null);
+  const { setLoadingTaskContext, removeTask } = useTaskContext();
 
   const handleClose = () => {
     router.push("/board");
@@ -31,6 +31,7 @@ export const useTaskView = ({ taskId, close }: TaskViewProps) => {
         setLoading(true);
         const response = await deleteTask(taskId, token);
         if (response === 200) {
+          removeTask(taskId);
           toast.success("Tarefa deletada com sucesso");
           setLoadingTaskContext(true);
           handleClose();

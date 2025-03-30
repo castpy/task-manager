@@ -18,6 +18,7 @@ interface TaskContextProps {
   tasks: Task[] | null | undefined;
   setTasks: (tasks: Task[] | null) => void;
   loadingTaskContext: boolean;
+  removeTask: (taskId: string) => void;
   setLoadingTaskContext: (loading: boolean) => void;
   updateTaskStatus: (taskId: string, newStatus: Task["status"]) => void;
   reorderTasks: (status: Task["status"], newAreaTasks: Task[]) => void;
@@ -34,7 +35,30 @@ const TaskProvider = ({ children }: { children: ReactNode }) => {
     try {
       if (token) {
         const response = await getTasks(token);
-        setTasks(response);
+
+        const localTask = localStorage.getItem("tasks");
+        if (localTask) {
+          const storedTasks: Task[] = JSON.parse(localTask);
+
+          const reorderedTasks = storedTasks
+            .map(
+              (storedTask) =>
+                response.find((task: Task) => task.id === storedTask.id) ||
+                storedTask
+            )
+            .filter((task) =>
+              response.some((resTask: Task) => resTask.id === task.id)
+            );
+
+          const newTasks = response.filter(
+            (task: Task) =>
+              !storedTasks.some((storedTask) => storedTask.id === task.id)
+          );
+
+          setTasks([...reorderedTasks, ...newTasks]);
+        } else {
+          setTasks(response);
+        }
       }
     } catch (error) {
       const e = error as AxiosErrorWithResponse;
@@ -77,6 +101,16 @@ const TaskProvider = ({ children }: { children: ReactNode }) => {
     setLoadingTaskContext(false);
   }, [tasks]);
 
+  // Função para remover a task do estado
+  const removeTask = (taskId: string) => {
+    setTasks((prevTasks) => {
+      if (!prevTasks) return prevTasks;
+      // Filtra as tasks que NÃO pertencem à task removida
+      const newTasks = prevTasks.filter((task) => task.id !== taskId);
+      return newTasks;
+    });
+  };
+
   // Função para atualizar o status da tarefa (movendo entre áreas)
   const updateTaskStatus = async (
     taskId: string,
@@ -113,6 +147,7 @@ const TaskProvider = ({ children }: { children: ReactNode }) => {
         setLoadingTaskContext,
         updateTaskStatus,
         reorderTasks,
+        removeTask,
       }}
     >
       {children}
