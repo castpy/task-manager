@@ -9,24 +9,30 @@ import { Plus } from "@phosphor-icons/react";
 import { useHeader } from "./use.header";
 import NewTask from "@/components/new_task/new_task.comp";
 import { useApp } from "@/hooks/use.app";
+import { useDevice } from "@/hooks/use.device";
 
 const HeaderComp = () => {
   const { logOut } = useApp();
+  const { device } = useDevice();
   const { user } = useUserContext();
   const { openModal, handleManageModal } = useHeader();
 
   return (
     <Box className={styles.main}>
-      <AboutPage
-        position="start"
-        title={`Olá, ${user?.infos[0].name || "Usuário"}!`}
-        subtitle="Este é o quadro de tarefas da sua equipe!"
-      />
+      {device !== "phone" && (
+        <AboutPage
+          position="start"
+          title={`Olá, ${user?.infos[0].name || "Usuário"}!`}
+          subtitle="Este é o seu quadro de tarefas!"
+        />
+      )}
 
-      <Button size="3" className={styles.button} onClick={handleManageModal}>
-        <Plus size={32} />
-        Nova tarefa
-      </Button>
+      {device !== "phone" && (
+        <Button size="3" className={styles.button} onClick={handleManageModal}>
+          <Plus size={32} />
+          Nova tarefa
+        </Button>
+      )}
 
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>

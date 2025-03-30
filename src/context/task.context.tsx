@@ -101,6 +101,40 @@ const TaskProvider = ({ children }: { children: ReactNode }) => {
     setLoadingTaskContext(false);
   }, [tasks]);
 
+  useEffect(() => {
+    if (tasks) {
+      const today = new Date();
+
+      tasks.forEach((task) => {
+        if (task.date_to) {
+          const taskDate = new Date(task.date_to);
+          const diffInDays = Math.ceil(
+            (taskDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+          );
+
+          if (diffInDays > 0 && diffInDays <= 2) {
+            const message = `Há tarefa próxima da data limite!`;
+
+            toast.info(message);
+
+            if ("Notification" in window) {
+              if (Notification.permission === "default") {
+                Notification.requestPermission();
+              }
+
+              if (Notification.permission === "granted") {
+                new Notification("Lembrete de Tarefa", {
+                  body: message,
+                  icon: "/path/to/icon.png",
+                });
+              }
+            }
+          }
+        }
+      });
+    }
+  }, [tasks]);
+
   // Função para remover a task do estado
   const removeTask = (taskId: string) => {
     setTasks((prevTasks) => {

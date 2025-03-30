@@ -31,7 +31,14 @@ const TaskView = ({ open, taskId, close }: TaskViewProps) => {
         <Dialog.Title>{task?.title}</Dialog.Title>
         <Blockquote>
           <Dialog.Description size="2" mb="4">
-            {task?.description}
+            {task.description
+              ? task.description.split("\n").map((line, index) => (
+                  <React.Fragment key={index}>
+                    {line}
+                    <br />
+                  </React.Fragment>
+                ))
+              : "Descrição da task não informada."}
           </Dialog.Description>
         </Blockquote>
 
