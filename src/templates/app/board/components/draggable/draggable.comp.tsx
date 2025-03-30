@@ -18,12 +18,19 @@ import {
 import { convertDate } from "@/utils/formatDate";
 
 const Draggable = ({ task }: DraggableProps) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: task.id });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: task.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition: transition || "transform 300ms ease",
+    opacity: isDragging ? 0.5 : 1,
   };
 
   return (
