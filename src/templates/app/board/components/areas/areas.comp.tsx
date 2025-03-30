@@ -14,7 +14,13 @@ import {
 } from "@dnd-kit/sortable";
 
 const Areas = ({ title, defaultValue }: AreasProps) => {
-  const { handleManageModal, openModal, areasTasksIds, areasTasks } = useAreas({
+  const {
+    handleManageModal,
+    openModal,
+    areasTasksIds,
+    areasTasks,
+    setNodeRef,
+  } = useAreas({
     title,
     defaultValue,
   });
@@ -40,14 +46,16 @@ const Areas = ({ title, defaultValue }: AreasProps) => {
         />
       )}
 
-      <SortableContext
-        items={areasTasksIds}
-        strategy={verticalListSortingStrategy}
-      >
-        {areasTasks.map((task) => (
-          <Draggable key={task.id} task={task} />
-        ))}
-      </SortableContext>
+      <Box ref={setNodeRef} className={styles.droppableContainer}>
+        <SortableContext
+          items={areasTasksIds}
+          strategy={verticalListSortingStrategy}
+        >
+          {areasTasks.map((task) => (
+            <Draggable key={task.id} task={task} />
+          ))}
+        </SortableContext>
+      </Box>
     </Card>
   );
 };
