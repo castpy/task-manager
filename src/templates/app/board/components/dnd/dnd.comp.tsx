@@ -16,6 +16,7 @@ const Dnd = () => {
     sensors,
     openView,
     activeTask,
+    setOpenView,
     handleDragEnd,
     handleDragStart,
     handleDragCancel,
@@ -37,7 +38,11 @@ const Dnd = () => {
             defaultValue={item.defaultValue}
           />
         ))}
-        <TaskView open={openView} taskId={taskId as string} />
+        <TaskView
+          open={openView}
+          taskId={taskId as string}
+          close={() => setOpenView(!openView)}
+        />
       </Box>
 
       <DragOverlay>

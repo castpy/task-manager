@@ -14,6 +14,7 @@ import { useSearchParams } from "next/navigation";
 
 export const useDnd = () => {
   const params = useSearchParams();
+  const { setLoadingTaskContext } = useTaskContext();
   const [openView, setOpenView] = useState(false);
   const [taskId, setTaskId] = useState<string | null>(null);
   const areas: DndProps["droppableArea"][] = [
@@ -83,6 +84,11 @@ export const useDnd = () => {
   };
 
   useEffect(() => {
+    setLoadingTaskContext(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     if (params.get("task")) {
       setOpenView(true);
       setTaskId(params.get("task"));
@@ -98,6 +104,7 @@ export const useDnd = () => {
     sensors,
     openView,
     activeTask,
+    setOpenView,
     handleDragEnd,
     handleDragStart,
     handleDragCancel,

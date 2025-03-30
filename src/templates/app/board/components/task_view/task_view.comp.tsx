@@ -15,13 +15,17 @@ import {
   Table,
 } from "@radix-ui/themes";
 
-const TaskView = ({ open, taskId }: TaskViewProps) => {
-  const { task } = useTaskView(taskId);
+const TaskView = ({ open, taskId, close }: TaskViewProps) => {
+  const { task, loading, handleDeleteTask, handleClose } = useTaskView({
+    open,
+    taskId,
+    close,
+  });
 
   if (!task) return null;
 
   return (
-    <Dialog.Root open={open}>
+    <Dialog.Root open={open} onOpenChange={handleClose}>
       <Dialog.Content maxWidth="800px">
         <Dialog.Title>{task?.title}</Dialog.Title>
         <Blockquote>
@@ -54,10 +58,14 @@ const TaskView = ({ open, taskId }: TaskViewProps) => {
                 )}`}
               </Table.Cell>
               <Table.Cell className={styles.containerActions}>
-                <IconButton variant="ghost">
+                <IconButton variant="ghost" disabled={loading}>
                   <Pencil size={22} />
                 </IconButton>
-                <IconButton variant="ghost">
+                <IconButton
+                  variant="ghost"
+                  onClick={handleDeleteTask}
+                  disabled={loading}
+                >
                   <Trash size={22} />
                 </IconButton>
               </Table.Cell>
@@ -67,12 +75,9 @@ const TaskView = ({ open, taskId }: TaskViewProps) => {
 
         <Flex gap="3" mt="4" justify="end">
           <Dialog.Close>
-            <Button variant="soft" color="gray">
+            <Button disabled={loading} loading={loading} onClick={handleClose}>
               Fechar
             </Button>
-          </Dialog.Close>
-          <Dialog.Close>
-            <Button>Fechar</Button>
           </Dialog.Close>
         </Flex>
       </Dialog.Content>
