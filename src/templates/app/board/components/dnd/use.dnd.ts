@@ -18,7 +18,14 @@ export const useDnd = () => {
     { title: "Completed", defaultValue: "completed" },
   ];
 
-  const sensors = useSensors(useSensor(PointerSensor));
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 250,
+        tolerance: 5,
+      },
+    })
+  );
   const { tasks, updateTaskStatus, reorderTasks } = useTaskContext();
   const [activeTask, setActiveTask] = useState<Task | null>(null);
 

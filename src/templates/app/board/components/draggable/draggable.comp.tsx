@@ -5,19 +5,12 @@ import { CSS } from "@dnd-kit/utilities";
 import styles from "./draggable.module.css";
 import { useSortable } from "@dnd-kit/sortable";
 import { DraggableProps } from "./types/draggable";
-import { DotsThreeOutline } from "@phosphor-icons/react";
-import {
-  Badge,
-  Box,
-  Card,
-  DropdownMenu,
-  IconButton,
-  Separator,
-  Text,
-} from "@radix-ui/themes";
+import { Badge, Box, Card, Separator, Text } from "@radix-ui/themes";
 import { convertDate } from "@/utils/formatDate";
+import { useRouter } from "next/navigation";
 
 const Draggable = ({ task }: DraggableProps) => {
+  const router = useRouter();
   const {
     attributes,
     listeners,
@@ -40,6 +33,7 @@ const Draggable = ({ task }: DraggableProps) => {
       {...attributes}
       ref={setNodeRef}
       className={styles.main}
+      onClick={() => router.push(`/board?task=${task.id}`)}
     >
       <Box className={styles.header}>
         <Badge variant="solid">
@@ -48,20 +42,6 @@ const Draggable = ({ task }: DraggableProps) => {
             {convertDate(task.date_to.split("T")[0])}
           </Text>
         </Badge>
-
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger>
-            <IconButton variant="soft" className={styles.button}>
-              <DotsThreeOutline size={22} />
-            </IconButton>
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content>
-            <DropdownMenu.Item>Editar</DropdownMenu.Item>
-            <DropdownMenu.Item>Compartilhar</DropdownMenu.Item>
-            <DropdownMenu.Separator />
-            <DropdownMenu.Item color="red">Deletar</DropdownMenu.Item>
-          </DropdownMenu.Content>
-        </DropdownMenu.Root>
       </Box>
 
       <Separator decorative orientation="horizontal" size="4" />
