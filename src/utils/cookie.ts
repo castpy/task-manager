@@ -5,13 +5,17 @@ export const setCookie = (value: string, days: number = 1) => {
   document.cookie = `${process.env.NEXT_PUBLIC_COOKIE_NAME}=${value};${expires};path=/`;
 };
 
-export const getCookie = (name: string): string | undefined => {
+export const getCookie = (name?: string): string | undefined => {
   if (typeof document === "undefined") {
     return undefined;
   }
 
   return document.cookie
     .split("; ")
-    .find((row) => row.startsWith(name))
+    .find((row) =>
+      row.startsWith(
+        name ? name : (process.env.NEXT_PUBLIC_COOKIE_NAME as string)
+      )
+    )
     ?.split("=")[1];
 };

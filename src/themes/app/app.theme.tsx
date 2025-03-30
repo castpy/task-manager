@@ -9,7 +9,7 @@ import { ThemeProvider } from "@/context/theme.context";
 import { FallBack } from "../../components/fallback/fallback.comp";
 import { RadixTheme } from "./components/radix_theme/radix_theme.comp";
 import { NextAuthProvider } from "./components/next_auth/next_auth.comp";
-import SafeArea from "@/components/safe_area/safe_area.comp";
+import { TaskProvider } from "@/context/task.context";
 
 export const AppTheme = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -17,14 +17,14 @@ export const AppTheme = ({ children }: { children: React.ReactNode }) => {
       <ThemeProvider>
         <NextAuthProvider>
           <UserProvider>
-            <RadixTheme>
-              <Suspense fallback={<FallBack />}>
-                <Toast />
-                <Box className={styles.main}>
-                  <SafeArea>{children}</SafeArea>
-                </Box>
-              </Suspense>
-            </RadixTheme>
+            <TaskProvider>
+              <RadixTheme>
+                <Suspense fallback={<FallBack />}>
+                  <Toast />
+                  <Box className={styles.main}>{children}</Box>
+                </Suspense>
+              </RadixTheme>
+            </TaskProvider>
           </UserProvider>
         </NextAuthProvider>
       </ThemeProvider>

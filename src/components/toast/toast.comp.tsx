@@ -8,7 +8,8 @@ const Toast = () => {
   return (
     <Toaster
       richColors
-      duration={5000}
+      expand={true}
+      duration={3000}
       visibleToasts={3}
       position={device !== "phone" ? "bottom-right" : "top-right"}
     />

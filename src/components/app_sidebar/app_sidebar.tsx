@@ -7,7 +7,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
+  // useSidebar,
 } from "@/shadcn/components/ui/sidebar";
 import { Box, Separator, Text } from "@radix-ui/themes";
 import styles from "./app_sidebar.module.css";
@@ -15,11 +15,11 @@ import { AppSidebarProps } from "./types/app_sidebar";
 import { Fragment } from "react";
 
 export function AppSidebar({ items }: AppSidebarProps) {
-  const { setOpen } = useSidebar();
+  // const { setOpen } = useSidebar();
 
   const handleItemClick = (onClick: () => void) => {
     onClick();
-    setOpen(false);
+    // setOpen(false);
   };
 
   return (

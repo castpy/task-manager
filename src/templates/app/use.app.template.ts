@@ -31,9 +31,7 @@ export const useAppTemplate = () => {
         const myData = await getMe(response.token);
         setUser(myData);
         toast.success(`Seja bem-vindo!`);
-        setTimeout(() => {
-          router.push("/board");
-        }, 3000);
+        router.push("/board");
       }
     } catch (error) {
       const e = error as AxiosErrorWithResponse;
