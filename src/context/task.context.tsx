@@ -33,6 +33,7 @@ const TaskProvider = ({ children }: { children: ReactNode }) => {
   const handleGetTasks = async () => {
     try {
       if (token) {
+        toast.info("Buscando tarefas...");
         const response = await getTasks(token);
         setTasks(response);
       }

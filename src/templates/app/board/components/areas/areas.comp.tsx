@@ -7,13 +7,23 @@ import { AreasProps } from "./types/areas";
 import { Plus } from "@phosphor-icons/react";
 import Draggable from "../draggable/draggable.comp";
 import NewTask from "@/components/new_task/new_task.comp";
-import { Box, Card, IconButton, Separator, Text } from "@radix-ui/themes";
+import {
+  Box,
+  Card,
+  IconButton,
+  Separator,
+  Skeleton,
+  Text,
+} from "@radix-ui/themes";
 import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { useTaskContext } from "@/context/task.context";
 
 const Areas = ({ title, defaultValue }: AreasProps) => {
+  const { loadingTaskContext } = useTaskContext();
+
   const {
     handleManageModal,
     openModal,
@@ -54,6 +64,7 @@ const Areas = ({ title, defaultValue }: AreasProps) => {
           {areasTasks.map((task) => (
             <Draggable key={task.id} task={task} />
           ))}
+          {loadingTaskContext && <Skeleton className={styles.skeleton} />}
         </SortableContext>
       </Box>
     </Card>
