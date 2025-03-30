@@ -1,3 +1,4 @@
+// src/context/task.context.tsx
 "use client";
 import { AxiosErrorWithResponse } from "@/@types/api.axios.error";
 import { Task } from "@/@types/task";
@@ -14,9 +15,11 @@ import { toast } from "sonner";
 
 interface TaskContextProps {
   tasks: Task[] | null | undefined;
-  setTasks: (Task: Task[] | null) => void;
+  setTasks: (tasks: Task[] | null) => void;
   loadingTaskContext: boolean;
   setLoadingTaskContext: (loading: boolean) => void;
+  updateTaskStatus: (taskId: string, newStatus: Task["status"]) => void;
+  reorderTasks: (status: Task["status"], newAreaTasks: Task[]) => void;
 }
 
 const TaskContext = createContext<TaskContextProps | undefined>(undefined);
@@ -62,9 +65,37 @@ const TaskProvider = ({ children }: { children: ReactNode }) => {
     setLoadingTaskContext(false);
   }, [tasks]);
 
+  // Função para atualizar o status da tarefa (movendo entre áreas)
+  const updateTaskStatus = (taskId: string, newStatus: Task["status"]) => {
+    setTasks((prevTasks) => {
+      if (!prevTasks) return prevTasks;
+      return prevTasks.map((task) =>
+        task.id === taskId ? { ...task, status: newStatus } : task
+      );
+    });
+  };
+
+  // Função para reordenar as tasks dentro de uma mesma área
+  const reorderTasks = (status: Task["status"], newAreaTasks: Task[]) => {
+    setTasks((prevTasks) => {
+      if (!prevTasks) return prevTasks;
+      // Filtra as tasks que NÃO pertencem à área
+      const otherTasks = prevTasks.filter((task) => task.status !== status);
+      // Retorna as tasks que não foram alteradas e as reordenadas da área atual
+      return [...otherTasks, ...newAreaTasks];
+    });
+  };
+
   return (
     <TaskContext.Provider
-      value={{ tasks, setTasks, loadingTaskContext, setLoadingTaskContext }}
+      value={{
+        tasks,
+        setTasks,
+        loadingTaskContext,
+        setLoadingTaskContext,
+        updateTaskStatus,
+        reorderTasks,
+      }}
     >
       {children}
     </TaskContext.Provider>
