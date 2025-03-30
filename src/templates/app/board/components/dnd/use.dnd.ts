@@ -15,6 +15,7 @@ import { useSearchParams } from "next/navigation";
 export const useDnd = () => {
   const params = useSearchParams();
   const { setLoadingTaskContext } = useTaskContext();
+  const [task, setTask] = useState<Task | null>(null);
   const [openView, setOpenView] = useState(false);
   const [editView, setEditView] = useState(false);
   const [taskId, setTaskId] = useState<string | null>(null);
@@ -90,6 +91,15 @@ export const useDnd = () => {
   }, []);
 
   useEffect(() => {
+    if (tasks) {
+      const taskFound = tasks.find((task) => task.id === taskId);
+      if (taskFound) {
+        setTask(taskFound);
+      }
+    }
+  }, [taskId, tasks]);
+
+  useEffect(() => {
     if (params.get("task")) {
       const edit = params.get("edit");
 
@@ -106,12 +116,14 @@ export const useDnd = () => {
   }, [params]);
 
   return {
+    task,
     areas,
     taskId,
     sensors,
     editView,
     openView,
     activeTask,
+    setEditView,
     setOpenView,
     handleDragEnd,
     handleDragStart,

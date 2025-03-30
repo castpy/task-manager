@@ -18,11 +18,17 @@ import { SelectComp } from "../select/select.comp";
 import { SelectCompProps } from "../select/types/select.comp";
 import { useNewTask } from "./use.new_task";
 
-const NewTask = ({ open, onClose, defaultStatus }: NewTaskProps) => {
+const NewTask = ({
+  open,
+  onClose,
+  defaultStatus,
+  defaultValues,
+}: NewTaskProps) => {
   const { form, setForm, loading, handlePostTask } = useNewTask({
     open,
     onClose,
     defaultStatus,
+    defaultValues,
   });
   const selectItens: SelectCompProps["groups"] = [
     {

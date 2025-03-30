@@ -1,15 +1,13 @@
-import { NewTaskForm } from "@/components/new_task/types/use.new_task";
 import { api } from "@/config/api.axios.config";
 import { AxiosResponse } from "axios";
 
-export const putTask = async (
+export const putStatusTask = async (
   token: string,
-  taskId: string,
-  form: NewTaskForm
+  form: { id: string; status: string }
 ): Promise<AxiosResponse["status"]> => {
   try {
     const response = await api.put<AxiosResponse["status"]>(
-      `/user/task/${taskId}`,
+      "/user/status-task",
       form,
       {
         headers: {

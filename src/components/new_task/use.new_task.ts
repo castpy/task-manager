@@ -6,18 +6,25 @@ import { postNewTask } from "@/services/post.newTask.service";
 import { getCookie } from "@/utils/cookie";
 import { NewTaskProps } from "./types/new_task";
 import { useTaskContext } from "@/context/task.context";
+import { putTask } from "@/services/put.task.service";
+import { useRouter } from "next/navigation";
 
-export const useNewTask = ({ onClose, defaultStatus }: NewTaskProps) => {
+export const useNewTask = ({
+  onClose,
+  defaultStatus,
+  defaultValues,
+}: NewTaskProps) => {
   const token = getCookie();
+  const router = useRouter();
   const { setLoadingTaskContext } = useTaskContext();
   const [loading, setLoading] = useState<boolean>(false);
   const [form, setForm] = useState<NewTaskForm>({
-    title: "",
-    status: defaultStatus,
-    description: "",
+    title: defaultValues?.title ?? "",
+    status: defaultValues?.status ?? defaultStatus,
+    description: defaultValues?.description ?? "",
     date: {
-      from: "",
-      to: "",
+      from: defaultValues?.date.from ?? "",
+      to: defaultValues?.date.to ?? "",
     },
   });
 
@@ -35,10 +42,21 @@ export const useNewTask = ({ onClose, defaultStatus }: NewTaskProps) => {
 
       if (token && isValidNewTaskForm(form)) {
         setLoading(true);
-        const response = await postNewTask(token, form);
-        if (response === 201) {
-          toast.success("Task criada!");
+        let response;
+        if (defaultValues) {
+          response = await putTask(token, defaultValues.id, form);
+        } else {
+          response = await postNewTask(token, form);
+        }
+
+        if (response) {
+          toast.success(
+            defaultValues
+              ? "Tarefa editada com sucesso!"
+              : "Tarefa criada com sucesso!"
+          );
           onClose();
+          router.push("/board");
           setLoadingTaskContext(true);
         }
       }

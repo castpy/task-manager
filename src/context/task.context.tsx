@@ -3,7 +3,7 @@
 import { AxiosErrorWithResponse } from "@/@types/api.axios.error";
 import { Task } from "@/@types/task";
 import { getTasks } from "@/services/get.tasks.service";
-import { putTask } from "@/services/put.task.service";
+import { putStatusTask } from "@/services/put.status_task.service";
 import { getCookie } from "@/utils/cookie";
 import React, {
   createContext,
@@ -47,7 +47,7 @@ const TaskProvider = ({ children }: { children: ReactNode }) => {
   const handlePutTask = async (data: { id: string; status: string }) => {
     try {
       if (token) {
-        await putTask(token, data);
+        await putStatusTask(token, data);
       }
     } catch (error) {
       const e = error as AxiosErrorWithResponse;

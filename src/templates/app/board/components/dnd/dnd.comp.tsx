@@ -8,15 +8,19 @@ import Areas from "../areas/areas.comp";
 import DraggableCard from "../draggable/draggable.comp";
 import { closestCenter, DndContext, DragOverlay } from "@dnd-kit/core";
 import TaskView from "../task_view/task_view.comp";
+import NewTask from "@/components/new_task/new_task.comp";
+import { NewTaskProps } from "@/components/new_task/types/new_task";
 
 const Dnd = () => {
   const {
+    task,
     areas,
     taskId,
     sensors,
     editView,
     openView,
     activeTask,
+    setEditView,
     setOpenView,
     handleDragEnd,
     handleDragStart,
@@ -44,6 +48,21 @@ const Dnd = () => {
           taskId={taskId as string}
           close={() => setOpenView(!openView)}
         />
+
+        {task && (
+          <NewTask
+            open={editView}
+            onClose={() => setEditView(!editView)}
+            defaultStatus={task?.status as NewTaskProps["defaultStatus"]}
+            defaultValues={{
+              ...task,
+              date: {
+                from: task.date_from,
+                to: task.date_to,
+              },
+            }}
+          />
+        )}
       </Box>
 
       <DragOverlay>
