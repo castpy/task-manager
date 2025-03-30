@@ -6,7 +6,10 @@ import {
   useSensor,
   useSensors,
   DragEndEvent,
+  DragStartEvent,
 } from "@dnd-kit/core";
+import { useState } from "react";
+import { Task } from "@/@types/task";
 
 export const useDnd = () => {
   const areas: DndProps["droppableArea"][] = [
@@ -17,49 +20,63 @@ export const useDnd = () => {
 
   const sensors = useSensors(useSensor(PointerSensor));
   const { tasks, updateTaskStatus, reorderTasks } = useTaskContext();
+  const [activeTask, setActiveTask] = useState<Task | null>(null);
+
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+    const task = tasks?.find((t) => t.id === active.id) || null;
+    if (task) setActiveTask(task);
+  };
 
   const handleDragEnd = (event: DragEndEvent) => {
-    // Garante que tasks está definido
     if (!tasks) return;
 
     const { active, over } = event;
-    if (!over) return;
+    if (!over) {
+      setActiveTask(null);
+      return;
+    }
 
-    // Procura a task ativa
-    const activeTask = tasks.find((task) => task.id === active.id);
-    if (!activeTask) return;
+    const activeTaskItem = tasks.find((task) => task.id === active.id);
+    if (!activeTaskItem) return;
 
-    // Tenta encontrar uma task com o id do elemento sobre o qual foi drop
     const overTask = tasks.find((task) => task.id === over.id);
 
     if (overTask) {
-      // Se a task for drop em uma task (dentro da mesma área ou não)
-      if (activeTask.status === overTask.status) {
+      if (activeTaskItem.status === overTask.status) {
         const areaTasks = tasks.filter(
-          (task) => task.status === activeTask.status
+          (task) => task.status === activeTaskItem.status
         );
         const oldIndex = areaTasks.findIndex((task) => task.id === active.id);
         const newIndex = areaTasks.findIndex((task) => task.id === over.id);
 
         if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
           const newAreaTasks = arrayMove(areaTasks, oldIndex, newIndex);
-          reorderTasks(activeTask.status, newAreaTasks);
+          reorderTasks(activeTaskItem.status, newAreaTasks);
         }
       } else {
-        updateTaskStatus(activeTask.id, overTask.status);
+        updateTaskStatus(activeTaskItem.id, overTask.status);
       }
     } else {
-      // Caso o drop seja em um container vazio,
-      // over.id deverá ser o id do contêiner (status)
-      if (activeTask.status !== over.id) {
-        updateTaskStatus(activeTask.id, over.id as string);
+      // Quando o drop ocorrer em um container vazio, usamos o id do container (over.id)
+      if (activeTaskItem.status !== over.id) {
+        updateTaskStatus(activeTaskItem.id, over.id as Task["status"]);
       }
     }
+
+    setActiveTask(null);
+  };
+
+  const handleDragCancel = () => {
+    setActiveTask(null);
   };
 
   return {
     areas,
     sensors,
+    activeTask,
     handleDragEnd,
+    handleDragStart,
+    handleDragCancel,
   };
 };

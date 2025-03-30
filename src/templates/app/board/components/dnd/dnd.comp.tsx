@@ -5,15 +5,25 @@ import { useDnd } from "./use.dnd";
 import styles from "./dnd.module.css";
 import { Box } from "@radix-ui/themes";
 import Areas from "../areas/areas.comp";
-import { closestCenter, DndContext } from "@dnd-kit/core";
+import DraggableCard from "../draggable/draggable.comp";
+import { closestCenter, DndContext, DragOverlay } from "@dnd-kit/core";
 
 const Dnd = () => {
-  const { areas, sensors, handleDragEnd } = useDnd();
+  const {
+    areas,
+    sensors,
+    activeTask,
+    handleDragEnd,
+    handleDragStart,
+    handleDragCancel,
+  } = useDnd();
 
   return (
     <DndContext
       sensors={sensors}
       onDragEnd={handleDragEnd}
+      onDragStart={handleDragStart}
+      onDragCancel={handleDragCancel}
       collisionDetection={closestCenter}
     >
       <Box className={styles.main}>
@@ -25,6 +35,10 @@ const Dnd = () => {
           />
         ))}
       </Box>
+
+      <DragOverlay>
+        {activeTask ? <DraggableCard task={activeTask} /> : null}
+      </DragOverlay>
     </DndContext>
   );
 };
