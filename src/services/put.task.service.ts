@@ -6,7 +6,7 @@ export const putTask = async (
   form: { id: string; status: string }
 ): Promise<AxiosResponse["status"]> => {
   try {
-    const response = await api.post<AxiosResponse["status"]>(
+    const response = await api.put<AxiosResponse["status"]>(
       "/user/task",
       form,
       {

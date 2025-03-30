@@ -3,6 +3,7 @@
 import { AxiosErrorWithResponse } from "@/@types/api.axios.error";
 import { Task } from "@/@types/task";
 import { getTasks } from "@/services/get.tasks.service";
+import { putTask } from "@/services/put.task.service";
 import { getCookie } from "@/utils/cookie";
 import React, {
   createContext,
@@ -43,6 +44,17 @@ const TaskProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const handlePutTask = async (data: { id: string; status: string }) => {
+    try {
+      if (token) {
+        await putTask(token, data);
+      }
+    } catch (error) {
+      const e = error as AxiosErrorWithResponse;
+      toast.error(e.response.data.message);
+    }
+  };
+
   useEffect(() => {
     if (loadingTaskContext) handleGetTasks();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,13 +78,19 @@ const TaskProvider = ({ children }: { children: ReactNode }) => {
   }, [tasks]);
 
   // Função para atualizar o status da tarefa (movendo entre áreas)
-  const updateTaskStatus = (taskId: string, newStatus: Task["status"]) => {
+  const updateTaskStatus = async (
+    taskId: string,
+    newStatus: Task["status"]
+  ) => {
+    // Atualiza o status da task no servidor
     setTasks((prevTasks) => {
       if (!prevTasks) return prevTasks;
+      // Atualiza o status da task no estado
       return prevTasks.map((task) =>
         task.id === taskId ? { ...task, status: newStatus } : task
       );
     });
+    await handlePutTask({ id: taskId, status: newStatus });
   };
 
   // Função para reordenar as tasks dentro de uma mesma área
