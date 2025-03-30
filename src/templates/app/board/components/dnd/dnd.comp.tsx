@@ -7,11 +7,14 @@ import { Box } from "@radix-ui/themes";
 import Areas from "../areas/areas.comp";
 import DraggableCard from "../draggable/draggable.comp";
 import { closestCenter, DndContext, DragOverlay } from "@dnd-kit/core";
+import TaskView from "../task_view/task_view.comp";
 
 const Dnd = () => {
   const {
     areas,
+    taskId,
     sensors,
+    openView,
     activeTask,
     handleDragEnd,
     handleDragStart,
@@ -34,6 +37,7 @@ const Dnd = () => {
             defaultValue={item.defaultValue}
           />
         ))}
+        <TaskView open={openView} taskId={taskId as string} />
       </Box>
 
       <DragOverlay>

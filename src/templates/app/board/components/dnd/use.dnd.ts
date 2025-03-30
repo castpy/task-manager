@@ -8,10 +8,14 @@ import {
   DragEndEvent,
   DragStartEvent,
 } from "@dnd-kit/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Task } from "@/@types/task";
+import { useSearchParams } from "next/navigation";
 
 export const useDnd = () => {
+  const params = useSearchParams();
+  const [openView, setOpenView] = useState(false);
+  const [taskId, setTaskId] = useState<string | null>(null);
   const areas: DndProps["droppableArea"][] = [
     { title: "To-Do", defaultValue: "to-do" },
     { title: "In Progress", defaultValue: "in-progress" },
@@ -78,9 +82,21 @@ export const useDnd = () => {
     setActiveTask(null);
   };
 
+  useEffect(() => {
+    if (params.get("task")) {
+      setOpenView(true);
+      setTaskId(params.get("task"));
+    } else {
+      setOpenView(false);
+      setTaskId(null);
+    }
+  }, [params]);
+
   return {
     areas,
+    taskId,
     sensors,
+    openView,
     activeTask,
     handleDragEnd,
     handleDragStart,
