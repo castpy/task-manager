@@ -5,7 +5,7 @@ import { CSS } from "@dnd-kit/utilities";
 import styles from "./draggable.module.css";
 import { useSortable } from "@dnd-kit/sortable";
 import { DraggableProps } from "./types/draggable";
-import { Badge, Box, Card, Separator, Text } from "@radix-ui/themes";
+import { Badge, Box, Card, Separator, Strong, Text } from "@radix-ui/themes";
 import { convertDate } from "@/utils/formatDate";
 import { useRouter } from "next/navigation";
 
@@ -47,7 +47,9 @@ const Draggable = ({ task }: DraggableProps) => {
       <Separator decorative orientation="horizontal" size="4" />
 
       <Box className={styles.content}>
-        <Text className={styles.title}>{task.title}</Text>
+        <Text className={styles.title} color="green">
+          <Strong>{task.title}</Strong>
+        </Text>
       </Box>
     </Card>
   );

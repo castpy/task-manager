@@ -5,11 +5,13 @@ import { useState, useEffect } from "react";
 
 export const useRequestPermission = () => {
   const [permission, setPermission] = useState<NotificationPermission>(
-    Notification?.permission
+    typeof window !== "undefined" && "Notification" in window
+      ? Notification.permission
+      : "default"
   );
 
   useEffect(() => {
-    if (!("Notification" in window)) {
+    if (typeof window === "undefined" || !("Notification" in window)) {
       toast.error("Este navegador não suporta notificações.");
       return;
     }
