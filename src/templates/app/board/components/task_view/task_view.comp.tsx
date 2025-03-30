@@ -16,11 +16,12 @@ import {
 } from "@radix-ui/themes";
 
 const TaskView = ({ open, taskId, close }: TaskViewProps) => {
-  const { task, loading, handleDeleteTask, handleClose } = useTaskView({
-    open,
-    taskId,
-    close,
-  });
+  const { task, loading, handleClickEdit, handleDeleteTask, handleClose } =
+    useTaskView({
+      open,
+      taskId,
+      close,
+    });
 
   if (!task) return null;
 
@@ -58,7 +59,11 @@ const TaskView = ({ open, taskId, close }: TaskViewProps) => {
                 )}`}
               </Table.Cell>
               <Table.Cell className={styles.containerActions}>
-                <IconButton variant="ghost" disabled={loading}>
+                <IconButton
+                  variant="ghost"
+                  disabled={loading}
+                  onClick={handleClickEdit}
+                >
                   <Pencil size={22} />
                 </IconButton>
                 <IconButton

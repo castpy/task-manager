@@ -14,6 +14,7 @@ const Dnd = () => {
     areas,
     taskId,
     sensors,
+    editView,
     openView,
     activeTask,
     setOpenView,

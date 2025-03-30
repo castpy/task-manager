@@ -16,6 +16,7 @@ export const useDnd = () => {
   const params = useSearchParams();
   const { setLoadingTaskContext } = useTaskContext();
   const [openView, setOpenView] = useState(false);
+  const [editView, setEditView] = useState(false);
   const [taskId, setTaskId] = useState<string | null>(null);
   const areas: DndProps["droppableArea"][] = [
     { title: "To-Do", defaultValue: "to-do" },
@@ -90,11 +91,17 @@ export const useDnd = () => {
 
   useEffect(() => {
     if (params.get("task")) {
-      setOpenView(true);
+      const edit = params.get("edit");
+
+      if (edit?.toLowerCase() === "false" || !edit) {
+        setEditView(false);
+        setOpenView(true);
+      } else if (edit?.toLowerCase() === "true") {
+        setOpenView(false);
+        setEditView(true);
+      }
+
       setTaskId(params.get("task"));
-    } else {
-      setOpenView(false);
-      setTaskId(null);
     }
   }, [params]);
 
@@ -102,6 +109,7 @@ export const useDnd = () => {
     areas,
     taskId,
     sensors,
+    editView,
     openView,
     activeTask,
     setOpenView,

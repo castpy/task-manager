@@ -21,6 +21,10 @@ export const useTaskView = ({ taskId, close }: TaskViewProps) => {
     close();
   };
 
+  const handleClickEdit = () => {
+    router.push(`/board?task=${taskId}&edit=true`);
+  };
+
   const handleDeleteTask = async () => {
     try {
       if (token) {
@@ -49,5 +53,5 @@ export const useTaskView = ({ taskId, close }: TaskViewProps) => {
     }
   }, [taskId, tasks]);
 
-  return { task, loading, handleDeleteTask, handleClose };
+  return { task, loading, handleClickEdit, handleDeleteTask, handleClose };
 };
