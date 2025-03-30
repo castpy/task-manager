@@ -23,7 +23,7 @@ const HeaderComp = () => {
         <AboutPage
           position="start"
           title={`Olá, ${user?.infos[0].name || "Usuário"}!`}
-          subtitle="Este é o quadro de tarefas da sua equipe!"
+          subtitle="Este é o seu quadro de tarefas!"
         />
       )}
 
