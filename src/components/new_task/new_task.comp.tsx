@@ -57,7 +57,9 @@ const NewTask = ({
   return (
     <Dialog.Root open={open}>
       <Dialog.Content maxWidth="600px">
-        <Dialog.Title className={styles.title}>Criar tarefa</Dialog.Title>
+        <Dialog.Title className={styles.title}>
+          {defaultValues?.id ? "Editar tarefa" : "Nova tarefa"}
+        </Dialog.Title>
 
         <Box className={styles.content}>
           <Box className={styles.inputContainer}>

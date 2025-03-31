@@ -38,8 +38,8 @@ const HeaderComp = () => {
         <DropdownMenu.Trigger>
           <Avatar
             alt={user?.infos[0].name || "A"}
+            src={user?.infos[0].avatar || ""}
             fallback={user?.infos[0].name[0] || "A"}
-            src={user?.infos[0].avatar || "/static/icon/user_icon.png"}
           />
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
