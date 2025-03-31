@@ -62,7 +62,7 @@ const TaskView = ({ open, taskId, close }: TaskViewProps) => {
               </Table.Cell>
               <Table.Cell>
                 {`${convertDate(task?.date_from.split("T")[0])} - ${convertDate(
-                  task?.date_from.split("T")[0]
+                  task?.date_to.split("T")[0]
                 )}`}
               </Table.Cell>
               <Table.Cell className={styles.containerActions}>
